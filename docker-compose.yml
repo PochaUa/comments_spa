@@ -1,0 +1,45 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: postgres
+    image: postgres
+    ports:
+      - '5433:5432'
+    volumes:
+      - data:/data/db
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+  api:
+    container_name: api
+    restart: always
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    external_links:
+      - db
+    depends_on:
+      - db
+
+  ui:
+    container_name: ui
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    external_links:
+      - api
+    depends_on:
+      - api
+
+volumes:
+  data: {}
