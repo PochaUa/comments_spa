@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import { Fetching, CommentsModel } from "../../types";
+import { Fetching, CommentModel } from "../../types";
 import { CommentsState } from "./types";
 
 enum CommentsActions {
@@ -33,7 +33,7 @@ export const getActions = (dispatch: Dispatch<Dispatchers>) => ({
       payload: { fetching: state },
     });
   },
-  setComments(comments: CommentsModel[]) {
+  setComments(comments: CommentModel[]) {
     dispatch({ type: CommentsActions.SET_COMMENTS, payload: { comments } });
   },
 });

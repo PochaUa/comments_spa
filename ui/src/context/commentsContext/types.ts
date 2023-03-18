@@ -1,5 +1,5 @@
-import { CommentsModel, FetchingState } from "../../types";
+import { CommentModel, FetchingState } from "../../types";
 
 export interface CommentsState extends FetchingState {
-  comments: CommentsModel[];
+  comments: CommentModel[];
 }

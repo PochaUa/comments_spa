@@ -1,0 +1,73 @@
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import Collapse from "@mui/material/Collapse";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+
+import { CommentModel } from "../../types";
+import { CommentsList } from "./CommentsList";
+import { useState } from "react";
+
+interface Props {
+  comment: CommentModel;
+}
+export const Comment = ({ comment }: Props) => {
+  const [expanded, setExpanded] = useState(false);
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+  const formattedDate = new Intl.DateTimeFormat("en-UK", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  })
+    .format(comment.timestamp)
+    .replace(",", " в")
+    .replaceAll("/", ".");
+  return (
+    <Card sx={{ width: "90%", margin: 2 }}>
+      <CardHeader
+        avatar={<Avatar src={comment.user.avatar} />}
+        title={comment.user.name}
+        subheader={formattedDate}
+      />
+      {comment.img ? (
+        <CardMedia
+          component="img"
+          height="320"
+          width="240"
+          image={comment.img}
+          alt="Paella dish"
+        />
+      ) : null}
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          {comment.text}
+        </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <Button onClick={handleExpandClick}>
+          {Array.isArray(comment.subComments)
+            ? `${comment.subComments.length} more comments`
+            : "Reply"}
+        </Button>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          {Array.isArray(comment.subComments) ? (
+            <CommentsList comments={comment.subComments} />
+          ) : (
+            <TextField multiline rows={4} sx={{ width: "100%" }} />
+          )}
+        </CardContent>
+      </Collapse>
+    </Card>
+  );
+};

@@ -1,10 +1,14 @@
 import { useEffect } from "react";
+import LinearProgress from "@mui/material/LinearProgress";
+
 import { useCommentsContext } from "../../context/commentsContext";
 import { Fetching } from "../../types";
 import { getComments } from "../../api/apiGateWay";
+import { CommentsList } from "./CommentsList";
 
 export const CommentsTable = () => {
   const { state, actions } = useCommentsContext();
+
   useEffect(() => {
     actions.setState(Fetching.FETCHING);
     getComments()
@@ -20,9 +24,8 @@ export const CommentsTable = () => {
 
   return (
     <>
-      {state.comments.map((comment) => (
-        <code key={Math.random()}>{JSON.stringify(comment, null, 2)}</code>
-      ))}
+      {state.fetching === Fetching.FETCHING ? <LinearProgress /> : null}
+      <CommentsList comments={state.comments} />
     </>
   );
 };

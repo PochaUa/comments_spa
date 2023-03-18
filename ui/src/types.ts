@@ -9,9 +9,11 @@ export interface FetchingState {
   fetching: Fetching;
 }
 
-export interface CommentsModel {
-  user: object;
+export interface CommentModel {
+  id: number;
+  user: { name: string; avatar: string };
   timestamp: number;
   text: string;
-  subComment: object;
+  img: string;
+  subComments: CommentModel[];
 }
