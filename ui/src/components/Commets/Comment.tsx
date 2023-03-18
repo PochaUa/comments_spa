@@ -21,29 +21,20 @@ export const Comment = ({ comment }: Props) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  const formattedDate = new Intl.DateTimeFormat("en-UK", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  })
-    .format(comment.timestamp)
-    .replace(",", " в")
-    .replaceAll("/", ".");
+
   return (
     <Card sx={{ width: "90%", margin: 2 }}>
       <CardHeader
-        avatar={<Avatar src={comment.user.avatar} />}
-        title={comment.user.name}
-        subheader={formattedDate}
+        avatar={<Avatar src={comment?.user?.avatar} />}
+        title={comment?.user?.username}
+        subheader={comment.createdAt}
       />
-      {comment.img ? (
+      {comment.file ? (
         <CardMedia
           component="img"
           height="320"
           width="240"
-          image={comment.img}
+          image={comment.file}
           alt="Paella dish"
         />
       ) : null}
@@ -54,14 +45,14 @@ export const Comment = ({ comment }: Props) => {
       </CardContent>
       <CardActions disableSpacing>
         <Button onClick={handleExpandClick}>
-          {Array.isArray(comment.subComments)
+          {Array.isArray(comment.subComments) && comment.subComments.length
             ? `${comment.subComments.length} more comments`
             : "Reply"}
         </Button>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          {Array.isArray(comment.subComments) ? (
+          {Array.isArray(comment.subComments) && comment.subComments.length ? (
             <CommentsList comments={comment.subComments} />
           ) : (
             <TextField multiline rows={4} sx={{ width: "100%" }} />

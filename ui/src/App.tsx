@@ -1,18 +1,14 @@
-import React, { useCallback } from "react";
 import "./App.css";
-import { getComments } from "./api/apiGateWay";
-import {
-  AppContextProvider,
-  useCommentsContext,
-} from "./context/commentsContext";
-import { Fetching } from "./types";
+import { AppContextProvider } from "./context/commentsContext";
 import { CommentsTable } from "./components/Commets/CommentsTable";
+import { ButtonsContainer } from "./components/Buttons/ButtonsContainer";
 
 function App() {
   return (
     <div className="App">
       <AppContextProvider>
         <header className="App-header">
+          <ButtonsContainer />
           <CommentsTable />
         </header>
       </AppContextProvider>

@@ -9,11 +9,21 @@ export interface FetchingState {
   fetching: Fetching;
 }
 
+export interface UserModel {
+  id: number;
+  username: string;
+  password: string;
+  email: string;
+  avatar: string;
+}
+
 export interface CommentModel {
   id: number;
-  user: { name: string; avatar: string };
-  timestamp: number;
+  userId: number;
+  user: Omit<UserModel, "password">;
+  file: string;
+  createdAt: string;
   text: string;
-  img: string;
+  parentId: number;
   subComments: CommentModel[];
 }
