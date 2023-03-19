@@ -5,6 +5,7 @@ export class User extends Model {
   declare id: number;
   declare username: string;
   declare password: string;
+  declare homePage: string;
   declare email: string;
   declare avatar: string;
 }
@@ -27,6 +28,7 @@ User.init(
       unique: true
     },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
+    homePage: { type: DataTypes.STRING, allowNull: true, unique: false },
     avatar: {
       type: DataTypes.STRING,
       allowNull: true,

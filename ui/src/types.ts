@@ -13,6 +13,7 @@ export interface UserModel {
   id: number;
   username: string;
   password: string;
+  homePage: string;
   email: string;
   avatar: string;
 }

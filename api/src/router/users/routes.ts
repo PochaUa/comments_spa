@@ -10,6 +10,7 @@ export const createUser = async ({ body }, res, next) => {
   const user = new User({
     username: body.username,
     email: body.email,
+    homePage: body.homePage || '',
     avatar: body.avatar
   });
   user
