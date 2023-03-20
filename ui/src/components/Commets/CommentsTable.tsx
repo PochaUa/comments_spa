@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 
-import { useCommentsContext } from "../../context/commentsContext";
+import { useAppContext } from "../../context/AppContext";
 import { Fetching } from "../../types";
 import { getComments } from "../../api/apiGateWay";
 import { CommentsList } from "./CommentsList";
 
 export const CommentsTable = () => {
-  const { state, actions } = useCommentsContext();
+  const { state, actions } = useAppContext();
 
   useEffect(() => {
     actions.setState(Fetching.FETCHING);

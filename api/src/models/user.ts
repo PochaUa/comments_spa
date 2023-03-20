@@ -25,7 +25,7 @@ User.init(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: false
     },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
     homePage: { type: DataTypes.STRING, allowNull: true, unique: false },

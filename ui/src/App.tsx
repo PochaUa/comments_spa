@@ -1,5 +1,5 @@
 import "./App.css";
-import { AppContextProvider } from "./context/commentsContext";
+import { AppContextProvider } from "./context/AppContext";
 import { CommentsTable } from "./components/Commets/CommentsTable";
 import { ButtonsContainer } from "./components/Buttons/ButtonsContainer";
 
