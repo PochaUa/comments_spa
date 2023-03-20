@@ -3,7 +3,7 @@ import { AddNewComment } from "./AddNewComment";
 import { Login } from "./Login";
 import { Logout } from "./Logout";
 import { Register } from "./Register";
-import { useUserContext } from "../../context/userContext";
+import { useAppContext } from "../../context/AppContext";
 
 const Container = styled.div`
   width: 95%;
@@ -14,19 +14,19 @@ const Container = styled.div`
 `;
 
 export const ButtonsContainer = () => {
-  const { user, setUser } = useUserContext();
+  const { state } = useAppContext();
 
   return (
     <Container>
-      {Object.keys(user).length ? (
+      {Object.keys(state.user).length ? (
         <>
           <AddNewComment />
-          <Logout setUser={setUser} />
+          <Logout />
         </>
       ) : (
         <>
-          <Login setUser={setUser} />
-          <Register setUser={setUser} />
+          <Login />
+          <Register />
         </>
       )}
     </Container>

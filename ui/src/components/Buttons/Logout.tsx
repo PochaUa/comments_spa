@@ -1,10 +1,17 @@
 import Button from "@mui/material/Button";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Props } from "./types";
+import { useCallback } from "react";
+import { useAppContext } from "../../context/AppContext";
 
-export const Logout = ({ setUser }: Props) => {
+export const Logout = () => {
+  const { actions } = useAppContext();
+
+  const handleClick = useCallback(() => {
+    actions.setUser({});
+    localStorage.setItem("user", JSON.stringify({}));
+  }, []);
   return (
-    <Button variant="contained" endIcon={<LogoutIcon />}>
+    <Button onClick={handleClick} variant="contained" endIcon={<LogoutIcon />}>
       Logout
     </Button>
   );

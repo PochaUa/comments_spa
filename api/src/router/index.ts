@@ -7,7 +7,7 @@ const router = Router();
 router.get('/api/comments', comments.routes.commentsGet);
 router.post('/api/comment', comments.routes.addComment);
 
-router.get('/api/users', users.routes.usersGet);
-router.post('/api/user', users.routes.createUser);
+router.post('/api/user/login', users.routes.loginUser);
+router.post('/api/user/register', users.routes.createUser);
 
 export default router;

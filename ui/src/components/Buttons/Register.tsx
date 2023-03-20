@@ -1,11 +1,24 @@
 import Button from "@mui/material/Button";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
-import { Props } from "./types";
+import { useCallback, useState } from "react";
+import { UserForm } from "../UserForm/UserForm";
 
-export const Register = ({ setUser }: Props) => {
+export const Register = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const changeIsOpen = useCallback(() => {
+    setIsOpen((prevState) => !prevState);
+  }, []);
   return (
-    <Button variant="contained" endIcon={<AppRegistrationIcon />}>
-      Register
-    </Button>
+    <>
+      <Button
+        onClick={changeIsOpen}
+        variant="contained"
+        endIcon={<AppRegistrationIcon />}
+      >
+        Register
+      </Button>
+      <UserForm isOpen={isOpen} registerButton closeModal={changeIsOpen} />
+    </>
   );
 };

@@ -29,17 +29,17 @@ services:
     depends_on:
       - db
 
-  ui:
-    container_name: ui
-    build:
-      context: ./ui
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    external_links:
-      - api
-    depends_on:
-      - api
+#  ui:
+#    container_name: ui
+#    build:
+#      context: ./ui
+#      dockerfile: Dockerfile
+#    ports:
+#      - "3000:3000"
+#    external_links:
+#      - api
+#    depends_on:
+#      - api
 
 volumes:
   data: {}
