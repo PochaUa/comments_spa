@@ -25,6 +25,6 @@ export interface CommentModel {
   file: string;
   createdAt: string;
   text: string;
-  parentId: number;
+  parentId: number | null;
   subComments: CommentModel[];
 }
