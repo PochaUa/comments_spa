@@ -1,7 +1,7 @@
 FROM node:16-alpine
 
 WORKDIR /usr/app
-RUN mkdir /usr/comments_spa
+RUN mkdir /usr/files
 
 COPY package.json ./
 COPY tsconfig.json ./

@@ -32,9 +32,10 @@ export const Comment = ({ comment }: Props) => {
       {comment.file ? (
         <CardMedia
           component="img"
-          height="320"
-          width="240"
-          image={comment.file}
+          sx={{ maxHeight: "320px", maxWidth: "240px" }}
+          image={`http://localhost:8080/static/${comment.file
+            .split("/")
+            .at(-1)}`}
           alt="Paella dish"
         />
       ) : null}

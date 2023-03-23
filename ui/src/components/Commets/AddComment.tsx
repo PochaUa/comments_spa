@@ -1,7 +1,7 @@
-import { FocusEvent, useCallback, useState } from "react";
+import { ChangeEvent, FocusEvent, useCallback, useRef, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import { UserModel } from "../../types";
-import { addComment, getComments } from "../../api/apiGateWay";
+import { addComment, getComments, uploadFile } from "../../api/apiGateWay";
 import SimpleBackdrop from "../UserForm/Backdrop";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
@@ -14,6 +14,7 @@ import Fab from "@mui/material/Fab";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
 import { useAppContext } from "../../context/AppContext";
+import Button from "@mui/material/Button";
 
 interface Props {
   isOpen: boolean;
@@ -23,6 +24,8 @@ interface Props {
 
 export const AddComment = ({ isOpen, closeModal, userInfo }: Props) => {
   const { actions } = useAppContext();
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [comment, setComment] = useState({
     userId: userInfo.id,
     file: "",
@@ -41,6 +44,30 @@ export const AddComment = ({ isOpen, closeModal, userInfo }: Props) => {
     text: (val) =>
       val.length < 3 ? "Text must be more than 3 characters" : "",
   };
+
+  const handleUploadClick = () => {
+    inputRef.current?.click();
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) {
+      return;
+    }
+    const formData = new FormData();
+    for (const file of Array.from(e.target.files)) {
+      formData.append(file.name, file);
+    }
+    uploadFile(formData)
+      .then(({ data }) => {
+        setComment({ ...comment, file: data });
+      })
+      .catch((e) => console.error(e));
+  };
+
+  const cancelFile = useCallback(() => {
+    setComment({ ...comment, file: "" });
+  }, []);
+
   const handleChange = useCallback(
     (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = event.target;
@@ -61,7 +88,7 @@ export const AddComment = ({ isOpen, closeModal, userInfo }: Props) => {
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [comment]
   );
   const resetAndClose = useCallback(() => {
     setComment({
@@ -129,6 +156,31 @@ export const AddComment = ({ isOpen, closeModal, userInfo }: Props) => {
             helperText={fieldValidation.text}
             error={!!fieldValidation.text}
           />
+          <Button
+            onClick={handleUploadClick}
+            variant="contained"
+            component="label"
+          >
+            Upload file
+          </Button>
+          <input
+            type="file"
+            multiple={false}
+            ref={inputRef}
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+          />
+          {comment.file ? (
+            <>
+              <img
+                src={`http://localhost:8080/static/${comment.file
+                  .split("/")
+                  .at(-1)}`}
+                style={{ maxWidth: "240px", maxHeight: "320px" }}
+              />
+              <Button onClick={cancelFile}>Cancel</Button>
+            </>
+          ) : null}
           <Box
             sx={{ display: "flex", justifyContent: "space-between", margin: 3 }}
           >
