@@ -31,9 +31,9 @@ export const UserForm = ({ isOpen, registerButton, closeModal }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const [fieldTouched, setFieldTouched] = useState({
-    username: "",
-    password: "",
-    email: "",
+    username: false,
+    password: false,
+    email: false,
   });
   const rules: { [key: string]: (p: string) => string } = {
     username: (val) =>

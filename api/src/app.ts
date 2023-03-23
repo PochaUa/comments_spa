@@ -9,6 +9,7 @@ const port = 8080;
 app.use(cors());
 app.use(express.json());
 app.use(router);
+app.use('/static', express.static(process.env.ASSETS_PATH));
 
 app.listen(port, async () => {
   return db

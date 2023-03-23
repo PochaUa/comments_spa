@@ -11,16 +11,21 @@ const Container = styled.div`
   position: fixed;
   justify-content: space-between;
   top: 10px;
+  z-index: 10;
 `;
 
 export const ButtonsContainer = () => {
-  const { state } = useAppContext();
+  const {
+    state: { user },
+  } = useAppContext();
 
   return (
     <Container>
-      {Object.keys(state.user).length ? (
+      {Object.keys(user).includes(
+        "username" && "id" && "password" && "homePage" && "email" && "avatar"
+      ) ? (
         <>
-          <AddNewComment />
+          <AddNewComment userInfo={user} />
           <Logout />
         </>
       ) : (
