@@ -27,6 +27,7 @@ export const UserForm = ({ isOpen, registerButton, closeModal }: Props) => {
     username: "",
     password: "",
     email: "",
+    homePage: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -45,6 +46,12 @@ export const UserForm = ({ isOpen, registerButton, closeModal }: Props) => {
         /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
       const validateEmail = rulesEmail.test(String(val).toLowerCase());
       return !validateEmail ? "Incorrect format E-mail" : "";
+    },
+    homePage: (val) => {
+      const rulesUrl =
+        /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w.-]*)*\/?$/;
+      const validateEmail = rulesUrl.test(String(val).toLowerCase());
+      return !validateEmail ? "Incorrect format url" : "";
     },
   };
   const handleChange = useCallback(
@@ -166,6 +173,8 @@ export const UserForm = ({ isOpen, registerButton, closeModal }: Props) => {
                 name="homePage"
                 onChange={handleChange}
                 label="Home page"
+                helperText={fieldValidation.homePage}
+                error={!!fieldValidation.homePage}
               />
               <TextField
                 value={user.avatar}
