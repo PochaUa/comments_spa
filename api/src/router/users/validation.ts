@@ -16,3 +16,22 @@ export const loginUser = (req, res, next) => {
   });
   next();
 };
+
+export const createUser = (req, res, next) => {
+  const user = req.body;
+
+  const requiredKeys: { [key: string]: string } = {
+    username: 'string',
+    email: 'string',
+    password: 'string',
+    homePage: 'string',
+    avatar: 'string'
+  };
+
+  Object.keys(requiredKeys).forEach((key) => {
+    if (!(typeof user[key] === requiredKeys[key])) {
+      throw new ValidationError('Incorrect shape user');
+    }
+  });
+  next();
+};

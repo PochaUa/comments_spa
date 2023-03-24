@@ -1,33 +1,12 @@
-import { Comment } from '../../models/comment';
-import { User } from '../../models/user';
 import formidable from 'formidable';
 import { ALLOWED_FILE_TYPES, MAX_FILE_SIZE } from '../../constants';
-import { rename } from 'fs/promises';
 import { ValidationError } from '../../errors';
-
-const saveFile = async (
-  tmpPath: string,
-  newFileName: string,
-  fileType: string
-) => {
-  const systemFileName = `${newFileName}.${fileType.split('/')[1]}`;
-  const urlFile = `${process.env.ASSETS_PATH}/${systemFileName}`;
-  await rename(tmpPath, urlFile);
-  return urlFile;
-};
+import { getComments } from '../../services/getComments';
+import { saveFile } from '../../services/saveFile';
+import { addComment } from '../../services/addComment';
 
 export const commentsGet = async (req, res, next) => {
-  Comment.findAll({
-    where: { parentId: req?.query?.parentId || null },
-    include: [
-      {
-        as: 'user',
-        model: User,
-        attributes: ['id', 'username', 'email', 'avatar']
-      },
-      'subComments'
-    ]
-  })
+  await getComments(req?.query?.parentId)
     .then((r) => {
       res.send(r);
     })
@@ -70,10 +49,10 @@ export const uploadFile = (req, res, next) => {
   });
 };
 
-export const addComment = async (req, res, next) => {
+export const commentAdd = async (req, res, next) => {
   const comment = req.body;
 
-  await Comment.create(comment)
+  await addComment(comment)
     .then((r) => res.send(r))
     .catch((e) => next(e));
 };
