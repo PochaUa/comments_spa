@@ -156,22 +156,32 @@ export const AddComment = ({ isOpen, closeModal, userInfo }: Props) => {
             helperText={fieldValidation.text}
             error={!!fieldValidation.text}
           />
-          <Button
-            onClick={handleUploadClick}
-            variant="contained"
-            component="label"
-          >
-            Upload file
-          </Button>
-          <input
-            type="file"
-            multiple={false}
-            ref={inputRef}
-            onChange={handleFileChange}
-            style={{ display: "none" }}
-          />
-          {comment.file ? (
+          {!comment.file ? (
             <>
+              <Button
+                onClick={handleUploadClick}
+                variant="contained"
+                component="label"
+              >
+                Upload file
+              </Button>
+              <input
+                type="file"
+                multiple={false}
+                ref={inputRef}
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+              />
+            </>
+          ) : null}
+          {comment.file ? (
+            <Box
+              sx={{
+                margin: 2,
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
               <img
                 src={`http://localhost:8080/static/${comment.file
                   .split("/")
@@ -179,7 +189,7 @@ export const AddComment = ({ isOpen, closeModal, userInfo }: Props) => {
                 style={{ maxWidth: "240px", maxHeight: "320px" }}
               />
               <Button onClick={cancelFile}>Cancel</Button>
-            </>
+            </Box>
           ) : null}
           <Box
             sx={{ display: "flex", justifyContent: "space-between", margin: 3 }}

@@ -29,3 +29,7 @@ export const addComment = (
 ): Promise<Omit<CommentModel, "user" | "subComments">> => {
   return axios.post(`${url}/api/comment`, comment);
 };
+
+export const uploadAvatar = (form: FormData): Promise<{ data: string }> => {
+  return axios.post(`${url}/api/user/uploadAvatar`, form);
+};

@@ -1,13 +1,15 @@
 import Box from "@mui/material/Box";
-import { FocusEvent, useCallback, useState } from "react";
+import { ChangeEvent, FocusEvent, useCallback, useRef, useState } from "react";
 import Fab from "@mui/material/Fab";
 import CloseIcon from "@mui/icons-material/Close";
 import DoneIcon from "@mui/icons-material/Done";
 import Dialog from "@mui/material/Dialog";
 import TextField from "@mui/material/TextField";
-import { loginUser, registerUser } from "../../api/apiGateWay";
+import { loginUser, registerUser, uploadAvatar } from "../../api/apiGateWay";
 import SimpleBackdrop from "./Backdrop";
 import { useAppContext } from "../../context/AppContext";
+import Button from "@mui/material/Button";
+import Avatar from "@mui/material/Avatar";
 
 interface Props {
   registerButton?: boolean;
@@ -16,6 +18,8 @@ interface Props {
 }
 export const UserForm = ({ isOpen, registerButton, closeModal }: Props) => {
   const { actions } = useAppContext();
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -86,6 +90,29 @@ export const UserForm = ({ isOpen, registerButton, closeModal }: Props) => {
       avatar: "",
     });
     closeModal();
+  }, []);
+
+  const handleUploadClick = () => {
+    inputRef.current?.click();
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) {
+      return;
+    }
+    const formData = new FormData();
+    for (const file of Array.from(e.target.files)) {
+      formData.append(file.name, file);
+    }
+    uploadAvatar(formData)
+      .then(({ data }) => {
+        setUser({ ...user, avatar: data });
+      })
+      .catch((e) => console.error(e));
+  };
+
+  const cancelFile = useCallback(() => {
+    setUser({ ...user, avatar: "" });
   }, []);
 
   const register = useCallback(() => {
@@ -176,12 +203,40 @@ export const UserForm = ({ isOpen, registerButton, closeModal }: Props) => {
                 helperText={fieldValidation.homePage}
                 error={!!fieldValidation.homePage}
               />
-              <TextField
-                value={user.avatar}
-                name="avatar"
-                onChange={handleChange}
-                label="Avatar"
-              />
+              {!user.avatar ? (
+                <>
+                  <Button
+                    onClick={handleUploadClick}
+                    variant="contained"
+                    component="label"
+                  >
+                    Upload file
+                  </Button>
+                  <input
+                    type="file"
+                    multiple={false}
+                    ref={inputRef}
+                    onChange={handleFileChange}
+                    style={{ display: "none" }}
+                  />
+                </>
+              ) : null}
+              {user.avatar ? (
+                <Box
+                  sx={{
+                    margin: 2,
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Avatar
+                    src={`http://localhost:8080/static/${user.avatar
+                      .split("/")
+                      .at(-1)}`}
+                  />
+                  <Button onClick={cancelFile}>Cancel</Button>
+                </Box>
+              ) : null}
             </>
           ) : null}
           <Box

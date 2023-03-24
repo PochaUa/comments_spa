@@ -18,5 +18,6 @@ router.post(
   users.validation.createUser,
   users.routes.createUser
 );
+router.post('/api/user/uploadAvatar', users.routes.uploadAvatar);
 
 export default router;

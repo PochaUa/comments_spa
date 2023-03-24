@@ -25,7 +25,13 @@ export const Comment = ({ comment }: Props) => {
   return (
     <Card sx={{ width: "90%", margin: 2 }}>
       <CardHeader
-        avatar={<Avatar src={comment?.user?.avatar} />}
+        avatar={
+          <Avatar
+            src={`http://localhost:8080/static/${comment?.user?.avatar
+              .split("/")
+              .at(-1)}`}
+          />
+        }
         title={comment?.user?.username}
         subheader={comment.createdAt}
       />
@@ -36,7 +42,6 @@ export const Comment = ({ comment }: Props) => {
           image={`http://localhost:8080/static/${comment.file
             .split("/")
             .at(-1)}`}
-          alt="Paella dish"
         />
       ) : null}
       <CardContent>
